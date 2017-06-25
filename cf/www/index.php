@@ -29,7 +29,7 @@ $app->post('/upload', function (Request $request, Application $app) {
     $metadata = json_decode($request->get('metadata'), true);
     $token    = $request->get('token');
 
-    if ($token === 'mySuperSecretToken') {
+    if ($token === $_ENV['token']) {
         $fileName = $_FILES['file']['name'];
         $fileType = $_FILES['file']['type'];
         $tmpName  = $_FILES['file']['tmp_name'];
@@ -39,7 +39,7 @@ $app->post('/upload', function (Request $request, Application $app) {
         try {
             $key = date('YmdHis') . "_" . $fileName;
             $s3->putObject([
-                'Bucket'      => 'myBucket',
+                'Bucket'      => $_ENV['s3bucket'],
                 'Key'         => $key,
                 'SourceFile'  => $tmpName,
                 'ContentType' => $fileType,
