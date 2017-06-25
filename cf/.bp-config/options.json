@@ -1,0 +1,7 @@
+{
+    "WEBDIR": "www",
+    "LIBDIR": "lib",
+    "PHP_VERSION": "{PHP_70_LATEST}",
+    "PHP_MODULES": ["cli"],
+    "WEB_SERVER": "nginx"
+}

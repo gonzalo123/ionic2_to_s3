@@ -1,0 +1,6 @@
+---
+applications:
+- name:    myApp
+  path: .
+  memory:  128MB
+  buildpack: php_buildpack

@@ -1,0 +1,6 @@
+{
+    "require": {
+        "silex/silex": "^2.1",
+        "aws/aws-sdk-php": "^3.30"
+    }
+}
