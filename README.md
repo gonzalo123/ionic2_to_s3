@@ -1,4 +1,4 @@
-Taking fotos with a ionic2 and upload to S3 Bucket with SAP's Cloud Foundry and Silex
+Taking photos with a ionic2 and upload to S3 Bucket with SAP's Cloud Foundry and Silex
 ======
 
 Today I want to play with an experiment. When I work with mobile applications, I normally use ionic and on-premise backends. Today I want play with cloud based backend. In this smalll experiment I want to use an ionic2 application to take pictures and upload them to S3 bucket. Let's start.
