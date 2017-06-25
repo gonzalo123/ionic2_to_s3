@@ -5,7 +5,7 @@ Today I want to play with an experiment. When I work with mobile applications, I
 
 First I've created a simple ionic2 application. It's a very simple aplication. Only one page with a button to trigger the device's camera
 
-```angular2html
+```html
 <ion-header>
     <ion-navbar>
         <ion-title>
@@ -25,7 +25,7 @@ First I've created a simple ionic2 application. It's a very simple aplication. O
 
 The controller uses @ionic-native/camera to take photos. Then we use @ionic-native/transfer to upload them to the backend
 
-```ecmascript 6
+```js
 import {Component} from '@angular/core';
 import {Camera, CameraOptions} from '@ionic-native/camera';
 import {Transfer, FileUploadOptions, TransferObject} from '@ionic-native/transfer';
