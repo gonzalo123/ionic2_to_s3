@@ -48,7 +48,7 @@ export class HomePage {
             });
 
             loader.present().then(() => {
-                let s3UploadUri = 'https://[my-tenant].cfapps.eu10.hana.ondemand.com/upload';
+                let s3UploadUri = 'https://myApp.cfapps.eu10.hana.ondemand.com/upload';
                 fileTransfer.upload(uri, s3UploadUri, options).then((data) => {
                     let message;
                     let response = JSON.parse(data.response);
