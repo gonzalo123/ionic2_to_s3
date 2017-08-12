@@ -1,4 +1,4 @@
-Taking photos with a ionic2 and upload to S3 Bucket with SAP's Cloud Foundry and Silex
+Taking photos with a ionic2 and upload to S3 Bucket with SAP's Cloud Foundry with Silex and Lumen
 ======
 
 Today I want to play with an experiment. When I work with mobile applications, I normally use ionic and on-premise backends. Today I want play with cloud based backend. In this smalll experiment I want to use an ionic2 application to take pictures and upload them to S3 bucket. Let's start.
@@ -119,8 +119,6 @@ applications:
 The PHP application is a simple Silex application to handle the file uploads and post the pictures to S3 using the official AWS SDK for PHP (based on Guzzle)
 
 ```php
-<?php
-
 include __DIR__ . "/../vendor/autoload.php";
 
 use Symfony\Component\HttpFoundation\Request;
@@ -190,3 +188,108 @@ $app->run();
 ```
 
 I just wanted a simple prototype (a working one) and that's what. Enough for a sunday morning hacking.
+
+UPDATE
+
+I had this post ready weeks ago but something has changed. Silex is dead so, as an exercise I'll migrate current Silex application to Lumen.
+
+That's the main application.
+
+```php
+use Aws\S3\S3Client;
+use Illuminate\Http\Request;
+use Laravel\Lumen\Application;
+require 'vendor/autoload.php';
+
+(new Dotenv\Dotenv(__DIR__ . "/../env"))->load();
+
+$app = new Application();
+$app->register(App\Providers\S3ServiceProvider::class);
+
+$app->post('/upload', function (Request $request, Application $app, S3Client $s3) {
+    $metadata = json_decode($request->get('metadata'), true);
+    $fileName = $_FILES['file']['name'];
+    $fileType = $_FILES['file']['type'];
+    $tmpName  = $_FILES['file']['tmp_name'];
+
+    try {
+        $key = date('YmdHis') . "_" . $fileName;
+        $s3->putObject([
+            'Bucket'      => getenv('s3bucket'),
+            'Key'         => $key,
+            'SourceFile'  => $tmpName,
+            'ContentType' => $fileType,
+            'Metadata'    => $metadata,
+        ]);
+        unlink($tmpName);
+
+        return response()->json([
+            'status' => true,
+            'key'    => $key,
+        ]);
+    } catch (Aws\S3\Exception\S3Exception $e) {
+        return response()->json([
+            'status' => false,
+            'error'  => $e->getMessage(),
+        ]);
+    }
+});
+
+$app->run();
+```
+
+Probably we can find a S3 Service provider, but I've built a simple one for this example.
+
+```php
+namespace App\Providers;
+
+use Illuminate\Support\ServiceProvider;
+use Aws\S3\S3Client;
+
+class S3ServiceProvider extends ServiceProvider
+{
+    public function register()
+    {
+        $this->app->bind(S3Client::class, function ($app) {
+            $conf = [
+                'debug'       => false,
+                'version'     => getenv('AWS_VERSION'),
+                'region'      => getenv('AWS_REGION'),
+                'credentials' => [
+                    'key'    => getenv('s3key'),
+                    'secret' => getenv('s3secret'),
+                ],
+            ];
+
+            error_log(json_encode($conf));
+            return new S3Client($conf);
+        });
+    }
+}
+```
+
+And also I'm using a middleware for the authentication
+
+```php
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Http\Request;
+
+class AuthMiddleware
+{
+    public function handle(Request $request, Closure $next)
+    {
+        $token = $request->get('token');
+        if ($token === getenv('token')) {
+            return response('Admin Login', 401);
+        }
+
+        return $next($request);
+    }
+}
+```
+
+Ok. I'll post this article soon. At least before Lumen will be dead also, and I need to rewrite it too :)
+
+

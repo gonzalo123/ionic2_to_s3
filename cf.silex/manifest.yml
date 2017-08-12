@@ -1,6 +1,6 @@
 ---
 applications:
-- name:    myApp
+- name:    silexappupload
   path: .
   memory:  128MB
   buildpack: php_buildpack

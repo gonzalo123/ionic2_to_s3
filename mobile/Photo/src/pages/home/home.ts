@@ -9,6 +9,7 @@ import {LoadingController} from 'ionic-angular';
     templateUrl: 'home.html'
 })
 export class HomePage {
+
     constructor(private transfer: Transfer,
                 private camera: Camera,
                 public toastCtrl: ToastController,
@@ -16,6 +17,7 @@ export class HomePage {
     }
 
     takePicture() {
+        console.log("takePicture ");
         const options: CameraOptions = {
             quality: 100,
             destinationType: this.camera.DestinationType.FILE_URI,
@@ -39,7 +41,7 @@ export class HomePage {
                 },
                 params: {
                     metadata: {foo: 'bar'},
-                    token: 'mySuperSecretToken'
+                    token: 'super_secret_token'
                 }
             };
 
