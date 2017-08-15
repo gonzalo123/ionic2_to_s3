@@ -10,7 +10,7 @@ class AuthMiddleware
     public function handle(Request $request, Closure $next)
     {
         $token = $request->get('token');
-        if ($token === getenv('token')) {
+        if ($token !== getenv('token')) {
             return response('Admin Login', 401);
         }
 
