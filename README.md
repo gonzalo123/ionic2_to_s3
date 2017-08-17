@@ -1,9 +1,9 @@
 Taking photos with a ionic2 and upload to S3 Bucket with SAP's Cloud Foundry, Silex and Lumen
 ======
 
-Today I want to play with an experiment. When I work with mobile applications, I normally use ionic and on-premise backends. Today I want play with cloud based backend. In this small experiment I want to use an ionic2 application to take pictures and upload them to S3 bucket. Let's start.
+Today I want to play with an experiment. When I work with mobile applications, I normally use ionic and on-premise backends. Today I want play with cloud based backends. In this small experiment I want to use an ionic2 application to take pictures and upload them to an S3 bucket. Let's start.
 
-First I've created a simple ionic2 application. It's a very simple aplication. Only one page with a button to trigger the device's camera
+First I've created a simple ionic2 application. It's a very simple application. Only one page with a button to trigger the device's camera.
 
 ```html
 <ion-header>
@@ -23,7 +23,7 @@ First I've created a simple ionic2 application. It's a very simple aplication. O
 </ion-content>
 ```
 
-The controller uses @ionic-native/camera to take photos. Then we use @ionic-native/transfer to upload them to the backend
+The controller uses @ionic-native/camera to take photos and later we use @ionic-native/transfer to upload them to the backend.
 
 ```js
 import {Component} from '@angular/core';
@@ -187,7 +187,7 @@ $app->post('/upload', function (Request $request, Application $app) {
 $app->run();
 ```
 
-I just wanted a simple prototype (a working one) and that's what. Enough for a sunday morning hacking.
+I just wanted a simple prototype (a working one). Enough for a Sunday morning hacking.
 
 UPDATE
 
